@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            // VERCEL REWRITE RULE: Matches /api/user/ and captures the rest of the path
+            // e.g., /api/user/register  -> captures 'register' as $1
+            "src": "/api/user/(.*)",  
+            
+            // Destination: Target the server.js function, appending the captured route ($1)
+            // e.g., /api/user/register -> rewrites internally to /server.js/register
+            "dest": "/server.js/$1"  
+        },
+        {
+            // VERCEL REWRITE RULE: Handles the base URL like / and /api/user
+            "src": "/(.*)",
+            "dest": "/server.js"
+        }
+    ]
+}
